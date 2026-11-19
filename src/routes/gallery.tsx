@@ -56,12 +56,6 @@ function GalleryPage() {
               </Reveal>
             ))}
           </div>
-          {business.gallery.isSample ? (
-            <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-muted-foreground">
-              These are demonstration images showcasing the standard of clean we aim for. Real
-              project photos can replace them as soon as cleaning is underway.
-            </p>
-          ) : null}
         </div>
       </section>
 

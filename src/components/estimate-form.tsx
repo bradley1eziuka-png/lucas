@@ -115,9 +115,9 @@ export function EstimateForm({
       return;
     }
 
-    // Demo mode: nothing is sent anywhere, and the UI says so.
+    // No endpoint configured: never report a false success. Show the call-us fallback instead.
     if (!formIsLive) {
-      setStatus("success");
+      setStatus("error");
       return;
     }
 
@@ -157,7 +157,6 @@ export function EstimateForm({
   }
 
   if (status === "success") {
-    const demo = !formIsLive;
     return (
       <div
         className={`flex flex-col items-center rounded-2xl border border-border bg-card text-center shadow-sm ${
@@ -169,17 +168,13 @@ export function EstimateForm({
         <span className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary text-primary">
           <CheckCircle2 className="h-7 w-7" />
         </span>
-        <h3 className="mt-5 text-xl font-bold text-foreground">
-          {demo ? "Demo mode: nothing was sent" : business.form.successTitle}
-        </h3>
+        <h3 className="mt-5 text-xl font-bold text-foreground">{business.form.successTitle}</h3>
         <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
-          {demo
-            ? "The form works, but no lead endpoint is configured for this demonstration site, so your details were not sent to anyone."
-            : business.form.successMessage.replace("{name}", business.name)}
+          {business.form.successMessage.replace("{name}", business.name)}
         </p>
         <Button type="button" variant="outline" className="mt-6" onClick={reset}>
           <RotateCcw className="mr-2 h-4 w-4" />
-          {demo ? "Try again" : "Send another request"}
+          Send another request
         </Button>
       </div>
     );
@@ -373,12 +368,6 @@ export function EstimateForm({
       >
         {sending ? "Sending…" : "Request My Free Estimate"}
       </Button>
-
-      {!formIsLive ? (
-        <p className="-mt-1 text-center text-xs text-muted-foreground">
-          Demo mode: no lead endpoint is configured, so submissions are not sent.
-        </p>
-      ) : null}
     </form>
   );
 }
