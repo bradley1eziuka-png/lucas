@@ -2,7 +2,6 @@ import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { AlertCircle, CheckCircle2, RotateCcw, X } from "lucide-react";
 import {
   business,
-  formIsLive,
   handymanPhoneDisplay,
   handymanPhoneHref,
   phoneDisplay,
@@ -62,6 +61,22 @@ function validate(v: FormState): Errors {
   return errors;
 }
 
+const SUBMIT_TIMEOUT_MS = 20000;
+
+/** Which page the request came from (sent to Formspree as `form_source`). */
+function describeSource(hasEstimate: boolean): string {
+  if (typeof window === "undefined") return "Website";
+  const path = window.location.pathname.replace(/\/+$/, "") || "/";
+  let where: string;
+  if (path === "/") where = "Homepage";
+  else if (path === "/contact") where = "Contact page";
+  else if (path === "/pricing") where = "Pricing page";
+  else if (path.startsWith("/services/")) {
+    where = `Service page (${path.slice("/services/".length)})`;
+  } else where = `Page ${path}`;
+  return hasEstimate ? `${where} via Estimate Calculator` : where;
+}
+
 export function EstimateForm({
   id,
   variant = "card",
@@ -109,23 +124,27 @@ export function EstimateForm({
     setErrors(found);
     if (Object.keys(found).length > 0) return;
 
-    // Bots fill the hidden field; humans never see it. Pretend success, send nothing.
+    // Bots fill the hidden field; humans never see it. Send nothing.
     if (honeypot.current?.value) {
       setStatus("success");
       return;
     }
 
+    const endpoint = business.form.endpoint.trim();
     // No endpoint configured: never report a false success. Show the call-us fallback instead.
-    if (!formIsLive) {
+    if (!endpoint) {
       setStatus("error");
       return;
     }
 
     inFlight.current = true;
     setStatus("sending");
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), SUBMIT_TIMEOUT_MS);
     try {
-      const res = await fetch(business.form.endpoint.trim(), {
+      const res = await fetch(endpoint, {
         method: "POST",
+        signal: controller.signal,
         headers: { Accept: "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
           name: values.fullName.trim(),
@@ -133,17 +152,42 @@ export function EstimateForm({
           service: values.service,
           message: values.message.trim(),
           // Preliminary ballpark shown by the calculator (not a quoted amount). Blank if unused.
+          form_source: describeSource(!!selection),
           estimate_category: selection?.category ?? "",
           estimate_service: selection?.service ?? "",
           estimate_starting_price: selection ? `${selection.price} (preliminary, not a quote)` : "",
+          estimate_note: selection
+            ? "Preliminary ballpark from the website calculator. Not a quote or a guarantee."
+            : "",
           _subject: `New estimate request from ${values.fullName.trim()} (${values.service})`,
           page: typeof window !== "undefined" ? window.location.href : "",
         }),
       });
-      setStatus(res.ok ? "success" : "error");
+      // Only a confirmed 2xx from Formspree counts as success. Anything else keeps the form as is.
+      let accepted = res.ok;
+      if (accepted) {
+        try {
+          const data: unknown = await res.json();
+          if (data && typeof data === "object" && "ok" in data && data.ok === false) {
+            accepted = false;
+          }
+        } catch {
+          // A 2xx without a JSON body is still an accepted submission.
+        }
+      }
+      if (accepted) {
+        setValues(emptyState);
+        setEstimateSelection(null);
+        setErrors({});
+        setAttempted(false);
+        setStatus("success");
+      } else {
+        setStatus("error");
+      }
     } catch {
       setStatus("error");
     } finally {
+      window.clearTimeout(timer);
       inFlight.current = false;
     }
   }

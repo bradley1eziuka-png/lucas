@@ -14,7 +14,7 @@
 
 import { IMG, type ImageRef } from "./images";
 
-export type FormProvider = "formspree" | "demo";
+export type FormProvider = "formspree";
 
 export interface BusinessConfig {
   // ── Identity ──────────────────────────────────────────────────────────
@@ -121,9 +121,9 @@ export interface BusinessConfig {
 
   // ── Lead form ─────────────────────────────────────────────────────────
   form: {
-    /** "formspree" posts to `endpoint`. "demo" never sends anything (and says so on screen). */
+    /** Leads are posted to `endpoint` via Formspree. */
     provider: FormProvider;
-    /** Full Formspree endpoint, e.g. "https://formspree.io/f/xxxxxxxx". Blank = automatic demo mode. */
+    /** Full Formspree endpoint, e.g. "https://formspree.io/f/xxxxxxxx". A blank endpoint makes the form show its call-us fallback. */
     endpoint: string;
     successTitle: string;
     /** Shown after a successful submission. `{name}` is replaced with the business name. */
@@ -322,10 +322,9 @@ From routine cleaning and deep cleans to minor repairs and household item remova
   // ── Lead form ─────────────────────────────────────────────────────────
   form: {
     provider: "formspree",
-    endpoint: "", // ← paste the client's Formspree endpoint here. Blank = demo mode.
-    successTitle: "Thank you! Your request is in.",
-    successMessage:
-      "Someone from {name} will reach out to talk through your project and help you get started.",
+    endpoint: "https://formspree.io/f/xljblkzg",
+    successTitle: "Thank you! Your request has been received.",
+    successMessage: "We'll be in touch soon.",
     errorMessage:
       "Sorry, we couldn't send your request. Please try again, or call us and we'll take care of it.",
   },
@@ -373,7 +372,7 @@ export const handymanPhoneHref = business.contact.secondaryPhone
 /** Name used in the © line / structured data. */
 export const legalName = business.legalName || business.name;
 
-/** True when the lead form has a real endpoint and will really send. */
+/** True when the lead form has an endpoint to post to. */
 export const formIsLive = business.form.provider === "formspree" && !!business.form.endpoint.trim();
 
 /** Site origin without a trailing slash ("" when not configured). */
