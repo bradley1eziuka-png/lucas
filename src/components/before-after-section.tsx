@@ -65,7 +65,7 @@ export function BeforeAfterSection() {
         <SectionHeading
           eyebrow="Before & After"
           title="See the Difference"
-          description="Take a look at real spaces we've helped care for."
+          description="A closer look at the spaces we've helped care for."
         />
 
         <div className="mx-auto mt-12 flex max-w-3xl flex-col gap-12">
