@@ -4,7 +4,8 @@ import { pageHead, BRAND_SHORT } from "@/lib/seo";
 import { PageHero } from "@/components/page-hero";
 import { FinalCta } from "@/components/final-cta";
 import { Reveal } from "@/components/reveal";
-import { TRANSFORMATION_VIDEO, TransformationVideo } from "@/components/transformation-video";
+import { TransformationVideo } from "@/components/transformation-video";
+import { TRANSFORMATION_VIDEO } from "@/lib/transformation-video";
 
 export const Route = createFileRoute("/gallery")({
   head: () =>

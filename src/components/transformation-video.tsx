@@ -1,28 +1,56 @@
-import { IMG } from "@/lib/images";
-
-/**
- * Client-provided bathroom cleaning video with on-screen "Before" and "After" footage.
- * Source is portrait (180x320 after rotation), H.264 + AAC, about 22 seconds and 0.75 MB.
- *
- * Native player: user-initiated playback only (no autoplay), `preload="none"` so the file is
- * not downloaded until someone presses play (only the small poster loads up front), and
- * `playsInline` so iPhones play it in place. Put it inside a box with a fixed aspect ratio so
- * the page never shifts while it loads.
- */
-export const TRANSFORMATION_VIDEO = {
-  src: "/videos/cleaning-transformation.mp4",
-  poster: IMG.clientTransformationPoster,
-  width: 180,
-  height: 320,
-  label: "Cleaning Transformation — Before & After",
-  description: "Video of a bathroom cleaning, showing the space before and after.",
-};
+import { useEffect, useRef } from "react";
+import { TRANSFORMATION_VIDEO } from "@/lib/transformation-video";
 
 export function TransformationVideo({ className = "" }: { className?: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    // React does not reliably set the muted attribute itself; autoplay requires it.
+    video.muted = true;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion || typeof IntersectionObserver === "undefined") return;
+
+    let userPaused = false;
+    let pausedByScroll = false;
+    const onPause = () => {
+      if (!pausedByScroll) userPaused = true;
+      pausedByScroll = false;
+    };
+    video.addEventListener("pause", onPause);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry) return;
+        if (entry.isIntersecting) {
+          if (!userPaused && video.paused) {
+            // If the browser refuses (e.g. data saver), the poster and play button remain.
+            video.play().catch(() => {});
+          }
+        } else if (!video.paused) {
+          pausedByScroll = true;
+          video.pause();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(video);
+
+    return () => {
+      observer.disconnect();
+      video.removeEventListener("pause", onPause);
+    };
+  }, []);
+
   return (
     <video
+      ref={ref}
       className={`h-full w-full bg-foreground object-contain ${className}`}
       controls
+      muted
+      loop
       playsInline
       preload="none"
       poster={TRANSFORMATION_VIDEO.poster}
