@@ -140,9 +140,8 @@ export interface BusinessConfig {
      */
     siteUrl: string;
     /**
-     * LAUNCH SWITCH. While false, every page sends `noindex, nofollow` and robots.txt
-     * disallows crawling, so the demo/staging site can never compete with a real client site.
-     * Set true (and set `siteUrl`) only when the client's site is ready to go live.
+     * INDEXING SWITCH. While false, every page sends `noindex, nofollow` and robots.txt
+     * disallows crawling. Set true (together with `siteUrl`) once the site is live.
      */
     indexable: boolean;
   };
@@ -158,7 +157,7 @@ export const business: BusinessConfig = {
   tagline: "Your Home. Our Solutions.",
   tagline2: "Clean It. Fix It. Clear It.",
   description:
-    "Family-owned cleaning, handyman, and property services in Bremen, Indiana. Insured and bonded.",
+    "Family-owned house cleaning, handyman, and junk removal services in Bremen, Indiana. Insured and bonded.",
   foundingStory: `Built on more than 25 years of professional cleaning experience, Lucas Property Solutions LLC brings a personal approach to caring for your home.
 
 April originally founded April's Signature Cleaning Co in January 2026 with a focus on dependable service, attention to detail, and customer satisfaction. After April and Guy became engaged, they expanded their services to include handyman work and property solutions.
@@ -166,7 +165,7 @@ April originally founded April's Signature Cleaning Co in January 2026 with a fo
 Today, their family-owned business helps homeowners throughout Bremen and surrounding communities keep their properties clean, maintained, and comfortable.
 
 From routine cleaning and deep cleans to minor repairs and household item removal, the goal is simple: make caring for your property easier.`,
-  businessType: "Residential Cleaning • Handyman • Property Services",
+  businessType: "Bremen, Indiana • Cleaning • Handyman • Junk Removal",
   schemaType: "LocalBusiness",
 
   // ── Contact ───────────────────────────────────────────────────────────
@@ -331,8 +330,8 @@ From routine cleaning and deep cleans to minor repairs and household item remova
 
   // ── SEO / launch ──────────────────────────────────────────────────────
   seo: {
-    siteUrl: "",
-    indexable: false,
+    siteUrl: "https://www.lucaspropertysolutions.com",
+    indexable: true,
   },
 };
 

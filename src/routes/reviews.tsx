@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { business } from "@/lib/business";
-import { pageHead } from "@/lib/seo";
+import { pageHead, BRAND_SHORT } from "@/lib/seo";
 import { PageHero } from "@/components/page-hero";
 import { FinalCta } from "@/components/final-cta";
 import { Reveal } from "@/components/reveal";
@@ -10,8 +10,10 @@ import { reviews } from "@/lib/reviews";
 export const Route = createFileRoute("/reviews")({
   head: () =>
     pageHead({
-      title: "Reviews",
-      description: `Read what customers say about April's cleaning and ${business.name}: thorough, dependable, and above and beyond.`,
+      title: `Customer Testimonials for Cleaning in Bremen, IN | ${BRAND_SHORT}`,
+      rawTitle: true,
+      description:
+        "Read what customers say about April's house cleaning: thorough, dependable, and above and beyond. Testimonials from Bremen, Indiana area homes.",
       path: "/reviews",
       image: business.images.reviewsHero.src,
     }),

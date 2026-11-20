@@ -8,7 +8,7 @@ import {
   phoneDisplay,
   phoneHref,
 } from "@/lib/business";
-import { localBusinessJsonLd, pageHead } from "@/lib/seo";
+import { localBusinessJsonLd, pageHead, BRAND_SHORT } from "@/lib/seo";
 import { PageHero } from "@/components/page-hero";
 import { EstimateForm } from "@/components/estimate-form";
 import { Reveal } from "@/components/reveal";
@@ -16,8 +16,10 @@ import { Reveal } from "@/components/reveal";
 export const Route = createFileRoute("/contact")({
   head: () =>
     pageHead({
-      title: "Contact",
-      description: `Contact ${business.name} in Bremen, Indiana. Request a free estimate for house cleaning, handyman services, or junk removal, or call to discuss your project.`,
+      title: `Contact & Free Estimates in Bremen, IN | ${BRAND_SHORT}`,
+      rawTitle: true,
+      description:
+        "Request a free estimate for house cleaning, handyman services, or junk removal in Bremen, Indiana, or call to talk through your project.",
       path: "/contact",
       image: business.images.contactHero.src,
       jsonLd: [localBusinessJsonLd()],

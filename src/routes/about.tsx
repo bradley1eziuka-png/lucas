@@ -11,7 +11,7 @@ import {
   Wrench,
 } from "lucide-react";
 import { business } from "@/lib/business";
-import { pageHead } from "@/lib/seo";
+import { pageHead, BRAND_SHORT } from "@/lib/seo";
 import { PageHero } from "@/components/page-hero";
 import { FinalCta } from "@/components/final-cta";
 import { Reveal } from "@/components/reveal";
@@ -20,8 +20,10 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/about")({
   head: () =>
     pageHead({
-      title: "About Us",
-      description: `Meet April and Guy Lucas of ${business.name}: a family-owned cleaning, handyman, and property services business in Bremen, Indiana with 25 years of cleaning experience.`,
+      title: `About April & Guy Lucas | Family-Owned in Bremen, IN | ${BRAND_SHORT}`,
+      rawTitle: true,
+      description:
+        "Meet April and Guy Lucas, the family behind Lucas Property Solutions in Bremen, Indiana. Insured and bonded, with April's 25 years of cleaning experience.",
       path: "/about",
       image: business.images.about.src,
     }),

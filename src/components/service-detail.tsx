@@ -8,12 +8,15 @@ import {
 } from "@/components/ui/accordion";
 import { getService, relatedServices, type Service } from "@/lib/services";
 import {
+  allServiceAreas,
   business,
   handymanPhoneDisplay,
   handymanPhoneHref,
   phoneDisplay,
   phoneHref,
 } from "@/lib/business";
+import { reviewsByName } from "@/lib/reviews";
+import { ReviewCard } from "@/components/reviews-section";
 import { ServiceIconPanel } from "@/components/service-icon";
 import { EstimateForm } from "@/components/estimate-form";
 import { Reveal } from "@/components/reveal";
@@ -76,7 +79,7 @@ export function ServiceDetail() {
                 href="#estimate"
                 className="inline-flex h-12 items-center justify-center rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md"
               >
-                Get a Free Estimate
+                {service.cta}
               </a>
               <a
                 href={line.href}
@@ -161,6 +164,8 @@ export function ServiceDetail() {
         </div>
       </section>
 
+      <ServiceDetails service={service} />
+
       {/* Other services */}
       <section className="border-y border-border bg-secondary/30 px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
@@ -198,7 +203,10 @@ export function ServiceDetail() {
                   <AccordionTrigger className="py-5 text-left text-base font-semibold text-foreground hover:text-primary [&[data-state=open]]:text-primary">
                     {item.q}
                   </AccordionTrigger>
-                  <AccordionContent className="pb-5 text-sm leading-relaxed text-muted-foreground">
+                  <AccordionContent
+                    forceMount
+                    className="pb-5 text-sm leading-relaxed text-muted-foreground"
+                  >
                     {item.a}
                   </AccordionContent>
                 </AccordionItem>
@@ -227,6 +235,7 @@ export function ServiceDetail() {
             variant="plain"
             showHeading={false}
             defaultService={service.formOption}
+            submitLabel={service.cta}
             className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-7"
           />
         </div>
@@ -234,6 +243,97 @@ export function ServiceDetail() {
 
       <FinalCtaInline service={service} />
     </>
+  );
+}
+
+/** Longer, search-oriented copy: who it is for, scope, pricing, testimonials and related services. */
+function ServiceDetails({ service }: { service: Service }) {
+  const testimonials = reviewsByName(service.testimonials);
+  const nearby = allServiceAreas().filter((a) => a !== business.location.primaryCity);
+  const nearbyList =
+    nearby.length > 1
+      ? `${nearby.slice(0, -1).join(", ")}, and ${nearby[nearby.length - 1]}`
+      : nearby.join("");
+
+  return (
+    <section className="px-4 pb-20 sm:px-6 lg:px-8 lg:pb-28">
+      <div className="mx-auto grid max-w-7xl gap-12 border-t border-border pt-14 lg:grid-cols-[1.4fr_1fr]">
+        <Reveal>
+          <h2 className="text-balance text-3xl font-bold text-foreground sm:text-4xl">
+            {service.title} in {business.location.primaryCity}, Indiana
+          </h2>
+          <div className="mt-6 space-y-8">
+            {service.sections.map((sec) => (
+              <div key={sec.heading}>
+                <h3 className="text-xl font-bold text-foreground">{sec.heading}</h3>
+                {sec.body.map((p) => (
+                  <p
+                    key={p}
+                    className="mt-3 text-pretty text-base leading-relaxed text-muted-foreground"
+                  >
+                    {p}
+                  </p>
+                ))}
+              </div>
+            ))}
+            <div>
+              <h3 className="text-xl font-bold text-foreground">Where we work</h3>
+              <p className="mt-3 text-pretty text-base leading-relaxed text-muted-foreground">
+                {business.name} is based in {business.location.primaryCity}, Indiana, and also
+                serves {nearbyList}. Not sure whether your address is in range? Call or send a
+                request and we&rsquo;ll let you know.
+              </p>
+            </div>
+          </div>
+          <p className="mt-8 text-base text-muted-foreground">
+            Want a quick ballpark first? See{" "}
+            <Link to="/pricing" className="font-semibold text-primary hover:underline">
+              starting prices and the estimate calculator
+            </Link>
+            .
+          </p>
+        </Reveal>
+
+        <Reveal delay={120}>
+          <div className="flex flex-col gap-6">
+            {testimonials.length > 0 ? (
+              <div>
+                <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-foreground">
+                  What customers say
+                </h3>
+                <div className="mt-4 flex flex-col gap-4">
+                  {testimonials.map((r) => (
+                    <ReviewCard key={r.name} review={r} />
+                  ))}
+                </div>
+              </div>
+            ) : null}
+            {service.links.length > 0 ? (
+              <div className="rounded-2xl border border-border bg-secondary/40 p-6">
+                <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-foreground">
+                  Related services
+                </h3>
+                <ul className="mt-4 space-y-3 text-sm leading-relaxed text-muted-foreground">
+                  {service.links.map((l) => (
+                    <li key={l.slug}>
+                      {l.before}
+                      <Link
+                        to="/services/$slug"
+                        params={{ slug: l.slug }}
+                        className="font-semibold text-primary hover:underline"
+                      >
+                        {l.anchor}
+                      </Link>
+                      {l.after}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </div>
+        </Reveal>
+      </div>
+    </section>
   );
 }
 
@@ -260,7 +360,7 @@ function FinalCtaInline({ service }: { service: Service }) {
               href="#estimate"
               className="inline-flex h-12 items-center justify-center rounded-xl bg-background px-6 text-sm font-semibold text-primary transition-colors hover:bg-background/90"
             >
-              Get a Free Estimate
+              {service.cta}
             </a>
             <a
               href={line.href}

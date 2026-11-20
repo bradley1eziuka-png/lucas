@@ -27,8 +27,8 @@ export function SiteLogo({
           src={logo.src}
           alt={logo.alt || name}
           className={`w-auto object-contain mix-blend-multiply ${imgClassName}`}
-          width={700}
-          height={700}
+          width={420}
+          height={420}
         />
       ) : (
         <>

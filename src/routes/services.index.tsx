@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { CATEGORIES, servicesByCategory, services } from "@/lib/services";
 import { ServiceIconPanel } from "@/components/service-icon";
 import { business } from "@/lib/business";
-import { pageHead } from "@/lib/seo";
+import { pageHead, BRAND_SHORT } from "@/lib/seo";
 import { PageHero } from "@/components/page-hero";
 import { FinalCta } from "@/components/final-cta";
 import { Reveal } from "@/components/reveal";
@@ -11,10 +11,10 @@ import { Reveal } from "@/components/reveal";
 export const Route = createFileRoute("/services/")({
   head: () =>
     pageHead({
-      title: "Cleaning, Handyman & Junk Removal Services",
-      description: `Explore ${business.name}'s services in Bremen, IN: ${services
-        .map((s) => s.title.toLowerCase())
-        .join(", ")}. Request a free estimate.`,
+      title: `Residential Cleaning & Handyman Services in Bremen, IN | ${BRAND_SHORT}`,
+      rawTitle: true,
+      description:
+        "Residential cleaning, handyman and minor repairs, junk removal, and estate cleanouts from a family-owned business in Bremen, Indiana. Request a free estimate.",
       path: "/services",
       image: business.images.servicesHero.src,
     }),

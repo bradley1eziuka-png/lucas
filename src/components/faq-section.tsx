@@ -24,7 +24,10 @@ export function FaqSection() {
                 <AccordionTrigger className="py-5 text-left text-base font-semibold text-foreground hover:text-primary [&[data-state=open]]:text-primary">
                   {item.q}
                 </AccordionTrigger>
-                <AccordionContent className="pb-5 text-sm leading-relaxed text-muted-foreground">
+                <AccordionContent
+                  forceMount
+                  className="pb-5 text-sm leading-relaxed text-muted-foreground"
+                >
                   {item.a}
                 </AccordionContent>
               </AccordionItem>

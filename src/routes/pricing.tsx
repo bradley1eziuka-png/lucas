@@ -12,7 +12,7 @@ import {
   JUNK_SERVICES,
   formatPrice,
 } from "@/lib/pricing";
-import { pageHead } from "@/lib/seo";
+import { pageHead, BRAND_SHORT } from "@/lib/seo";
 import { PageHero } from "@/components/page-hero";
 import { EstimateCalculator } from "@/components/estimate-calculator";
 import { EstimateForm } from "@/components/estimate-form";
@@ -22,8 +22,10 @@ import { Reveal } from "@/components/reveal";
 export const Route = createFileRoute("/pricing")({
   head: () =>
     pageHead({
-      title: "Pricing & Ballpark Estimate Calculator",
-      description: `See starting prices for house cleaning, handyman services, and junk removal in Bremen, Indiana from ${business.name}, and get an instant ballpark estimate.`,
+      title: `Cleaning & Handyman Prices in Bremen, IN | ${BRAND_SHORT}`,
+      rawTitle: true,
+      description:
+        "Starting prices for house cleaning, handyman services, and junk removal in Bremen, Indiana, plus a ballpark estimate calculator. Request an exact quote.",
       path: "/pricing",
       image: business.images.servicesHero.src,
     }),

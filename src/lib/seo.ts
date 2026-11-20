@@ -60,6 +60,7 @@ export function pageHead({
     { property: "og:description", content: description },
     { property: "og:type", content: "website" },
     { property: "og:site_name", content: business.name },
+    { property: "og:locale", content: "en_US" },
     { name: "twitter:card", content: ogImage ? "summary_large_image" : "summary" },
     { name: "twitter:title", content: fullTitle },
     { name: "twitter:description", content: description },
@@ -92,12 +93,15 @@ const loc = () => {
   return primaryCity ? ` in ${[primaryCity, state].filter(Boolean).join(", ")}` : "";
 };
 
+/** Short brand used as the title suffix (the legal "LLC" name stays in structured data and the footer). */
+export const BRAND_SHORT = "Lucas Property Solutions";
+
 export function homeTitle(): string {
-  return `${business.name} | Cleaning & Handyman Services in Bremen, IN`;
+  return `House Cleaning, Handyman & Junk Removal in Bremen, IN | ${BRAND_SHORT}`;
 }
 
 export function homeDescription(): string {
-  return "Family-owned cleaning, handyman, and property services in Bremen, Indiana. Residential cleaning, minor repairs, junk removal, and more. Call for an estimate.";
+  return "Family-owned house cleaning, handyman, and junk removal in Bremen, Indiana and nearby Plymouth, Elkhart, and South Bend. Insured and bonded. Free estimates.";
 }
 
 export function serviceTitle(s: Service): string {
@@ -154,6 +158,7 @@ export function localBusinessJsonLd(): object {
     email: contact.email || undefined,
     openingHoursSpecification: contact.hours.length ? hoursSpec(contact.hours) : undefined,
     image: imageUrl(undefined) || undefined,
+    logo: absoluteUrl(business.branding.logo.src) || undefined,
     address: hasAddress
       ? {
           "@type": "PostalAddress",
@@ -189,7 +194,7 @@ export function serviceJsonLd(s: Service): object {
     description: s.intro,
     serviceType: s.title,
     url: absoluteUrl(`/services/${s.slug}`) || undefined,
-    image: absoluteUrl(s.heroImage) || undefined,
+    image: s.heroImage ? absoluteUrl(s.heroImage) || undefined : undefined,
     provider: {
       "@type": business.schemaType,
       name: business.name,

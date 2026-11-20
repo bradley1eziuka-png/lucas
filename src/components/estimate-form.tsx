@@ -83,6 +83,7 @@ export function EstimateForm({
   className = "",
   defaultService = "",
   showHeading = true,
+  submitLabel = "Request My Free Estimate",
 }: {
   id?: string;
   variant?: "card" | "plain";
@@ -91,6 +92,8 @@ export function EstimateForm({
   defaultService?: string;
   /** Hide the "Get a Free Estimate" heading when the surrounding section already has one. */
   showHeading?: boolean;
+  /** Label of the submit button (service pages use a service-specific call to action). */
+  submitLabel?: string;
 }) {
   const uid = useId();
   const emptyState: FormState = { fullName: "", phone: "", service: defaultService, message: "" };
@@ -410,7 +413,7 @@ export function EstimateForm({
         className="mt-1 h-12 w-full text-base font-semibold"
         disabled={sending}
       >
-        {sending ? "Sending…" : "Request My Free Estimate"}
+        {sending ? "Sending…" : submitLabel}
       </Button>
     </form>
   );

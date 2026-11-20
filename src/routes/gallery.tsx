@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { business } from "@/lib/business";
-import { pageHead } from "@/lib/seo";
+import { pageHead, BRAND_SHORT } from "@/lib/seo";
 import { PageHero } from "@/components/page-hero";
 import { FinalCta } from "@/components/final-cta";
 import { Reveal } from "@/components/reveal";
@@ -8,8 +8,10 @@ import { Reveal } from "@/components/reveal";
 export const Route = createFileRoute("/gallery")({
   head: () =>
     pageHead({
-      title: "Gallery",
-      description: `Browse photos of clean homes from ${business.name} in Bremen, Indiana and surrounding communities.`,
+      title: `Home Photo Gallery | Cleaning in Bremen, IN | ${BRAND_SHORT}`,
+      rawTitle: true,
+      description:
+        "Browse photos of homes in and around Bremen, Indiana from Lucas Property Solutions, from kitchens and bathrooms to dining and living rooms.",
       path: "/gallery",
       image: business.gallery.images[0]?.src,
     }),

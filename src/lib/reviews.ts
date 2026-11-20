@@ -71,6 +71,13 @@ const FEATURED = [
   "Patricia V.",
   "Steven W.",
 ];
+/** Looks up existing testimonials by reviewer name (used on service pages). Unknown names are skipped. */
+export function reviewsByName(names: string[] | undefined): Review[] {
+  return (names ?? [])
+    .map((n) => reviews.find((r) => r.name === n))
+    .filter((r): r is Review => !!r);
+}
+
 export const featuredReviews: Review[] = FEATURED.map((n) =>
   reviews.find((r) => r.name === n),
 ).filter((r): r is Review => !!r);
