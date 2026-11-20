@@ -32,6 +32,7 @@ export const IMG = {
   clientShowerClean1: "/images/client/shower-clean-1.jpg",
   clientShowerBefore: "/images/client/before-shower.jpg",
   clientShowerClean2: "/images/client/shower-clean-2.jpg",
+  clientTransformationPoster: "/images/client/transformation-poster.jpg",
   clientLakeviewDining: "/images/client/lakeview-dining.jpg",
   clientLakeviewLiving: "/images/client/lakeview-living.jpg",
   clientChandelierDining: "/images/client/chandelier-dining.jpg",

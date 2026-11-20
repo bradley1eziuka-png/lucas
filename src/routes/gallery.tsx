@@ -4,6 +4,7 @@ import { pageHead, BRAND_SHORT } from "@/lib/seo";
 import { PageHero } from "@/components/page-hero";
 import { FinalCta } from "@/components/final-cta";
 import { Reveal } from "@/components/reveal";
+import { TRANSFORMATION_VIDEO, TransformationVideo } from "@/components/transformation-video";
 
 export const Route = createFileRoute("/gallery")({
   head: () =>
@@ -39,6 +40,14 @@ function GalleryPage() {
             </div>
           ) : null}
           <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
+            <Reveal>
+              <figure className="relative aspect-[3/4] overflow-hidden rounded-2xl border border-border bg-foreground shadow-sm break-inside-avoid">
+                <TransformationVideo />
+                <figcaption className="pointer-events-none absolute left-3 top-3 max-w-[calc(100%-1.5rem)] rounded-full bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground shadow-md">
+                  {TRANSFORMATION_VIDEO.label}
+                </figcaption>
+              </figure>
+            </Reveal>
             {business.gallery.images.map((img, i) => (
               <Reveal key={img.src} delay={(i % 3) * 80}>
                 <div className="group relative overflow-hidden rounded-2xl border border-border shadow-sm break-inside-avoid">

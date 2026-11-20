@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { IMG } from "@/lib/images";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/reveal";
+import { TransformationVideo } from "@/components/transformation-video";
 
 /**
  * Confirmed before/after pairs only. A pair is listed here when both photos show the
@@ -81,6 +82,27 @@ export function BeforeAfterSection() {
             </Reveal>
           ))}
         </div>
+
+        <Reveal className="mx-auto mt-14 max-w-3xl">
+          <div className="grid items-center gap-8 rounded-2xl border border-border bg-card p-6 shadow-sm sm:grid-cols-[16rem_1fr] sm:p-8">
+            <div className="mx-auto w-full max-w-[16rem]">
+              <div className="aspect-[9/16] overflow-hidden rounded-xl border border-border bg-foreground">
+                <TransformationVideo />
+              </div>
+            </div>
+            <div className="text-center sm:text-left">
+              <h3 className="text-balance text-2xl font-bold text-foreground sm:text-3xl">
+                See the Results for Yourself
+              </h3>
+              <p className="mt-3 text-pretty text-base leading-relaxed text-muted-foreground">
+                Watch a cleaning transformation from Lucas Property Solutions.
+              </p>
+              <p className="mt-4 font-serif text-base italic text-muted-foreground">
+                Bathroom cleaning, before and after
+              </p>
+            </div>
+          </div>
+        </Reveal>
 
         <div className="mt-10 text-center">
           <Link
