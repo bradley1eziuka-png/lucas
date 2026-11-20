@@ -216,6 +216,16 @@ export function SiteFooter() {
           <p className="text-center text-xs text-muted-foreground sm:text-left">
             &copy; {year} {legalName}. All rights reserved.
           </p>
+          <p className="text-center text-xs text-muted-foreground sm:text-right">
+            <a
+              href="https://getarclo.com"
+              target="_blank"
+              rel="noopener"
+              className="transition-colors hover:text-primary hover:underline"
+            >
+              Website by Arclo
+            </a>
+          </p>
         </div>
       </div>
     </footer>
